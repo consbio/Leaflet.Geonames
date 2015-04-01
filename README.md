@@ -11,6 +11,20 @@ See the [example](//consbio.github.io/Leaflet.Geonames).
 *Tested with Leaflet 0.7.x*
 
 
+## Install
+
+From Bower:
+
+```
+bower install Leaflet.Geonames
+```
+
+
+From NPM:
+
+```
+npm install leaflet-geonames
+```
 
 
 ## Usage

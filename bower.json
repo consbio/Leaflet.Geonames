@@ -1,0 +1,32 @@
+{
+  "name": "Leaflet.Geonames",
+  "version": "0.1.0",
+  "homepage": "https://github.com/consbio/Leaflet.Geonames",
+  "authors": [
+    "Brendan Ward <bcward@consbio.org>"
+  ],
+  "description": "GeoNames geocoding search control for Leaflet",
+  "main": [
+    "L.Control.Geonames.min.js",
+    "L.Control.Geonames.css"
+  ],
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "Leaflet"
+  ],
+  "license": "ISC",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "uglify-js": "~2.4.16",
+    "jake": "~8.0.10",
+    "node-minify": "~1.0.1"
+}
+}
