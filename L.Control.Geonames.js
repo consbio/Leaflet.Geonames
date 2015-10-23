@@ -7,11 +7,11 @@ L.Control.Geonames = L.Control.extend({
         username: '', //Geonames account username.  Must be provided
         maxresults: 5, //Maximum number of results to display per search
         zoomLevel: null, //Max zoom level to zoom to for location.  If null, will use the map's max zoom level.
-        className: 'fa fa-crosshairs', //class for icon
+        className: 'fa fa-search', //class for icon
         workingClass: 'fa-spin', //class for search underway
         featureClasses: ['A', 'H', 'L', 'P', 'R', 'T', 'U', 'V'], //feature classes to search against.  See: http://www.geonames.org/export/codes.html
         baseQuery: 'isNameRequired=true', //The core query sent to GeoNames, later combined with other parameters above
-        position: 'topleft',
+        position: 'topleft'
     },
     onAdd: function() {
         this._container = L.DomUtil.create('div', 'leaflet-geonames-search leaflet-bar');
