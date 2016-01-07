@@ -119,14 +119,11 @@ L.Control.Geonames = L.Control.extend({
                         this._map.removeLayer(this._marker);
                         this._marker = null;
                     }
+		    this._map.setView([lat, lon], zoomLevel, false);
 		    if (this.options.markNames) {
 			this._marker = L.marker([lat, lon]);
 			this._marker.addTo(this._map).bindPopup(this._getName(geoname));
-			this._map.setView([lat, lon], zoomLevel, false);
 			this._marker.openPopup();
-		    }
-		    else {
-			this._map.setView([lat, lon], zoomLevel, false);
 		    }
                 }, this);
             }, this);
