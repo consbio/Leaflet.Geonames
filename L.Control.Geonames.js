@@ -11,7 +11,8 @@ L.Control.Geonames = L.Control.extend({
         workingClass: 'fa-spin', //class for search underway
         featureClasses: ['A', 'H', 'L', 'P', 'R', 'T', 'U', 'V'], //feature classes to search against.  See: http://www.geonames.org/export/codes.html
         baseQuery: 'isNameRequired=true', //The core query sent to GeoNames, later combined with other parameters above
-        position: 'topleft'
+        position: 'topleft',
+	markNames: true //show a marker at the location of each geoname found, with an associated popup which shows the name
     },
     onAdd: function() {
         this._container = L.DomUtil.create('div', 'leaflet-geonames-search leaflet-bar');
@@ -107,6 +108,7 @@ L.Control.Geonames = L.Control.extend({
             L.DomUtil.addClass(this._resultsList, 'hasResults');
             this._hasResults = true;
             var li;
+	    var zoomLevel = this.options.zoomLevel || this._map.getMaxZoom();
             response.geonames.forEach(function(geoname){
                 li = L.DomUtil.create('li', '', this._resultsList);
                 li.innerHTML = this._getName(geoname);
@@ -117,9 +119,12 @@ L.Control.Geonames = L.Control.extend({
                         this._map.removeLayer(this._marker);
                         this._marker = null;
                     }
-                    this._marker = L.marker([lat, lon]).addTo(this._map).bindPopup(this._getName(geoname));
-                    this._map.setView([lat, lon], this.options.zoomLevel || this._map.getMaxZoom(), false);
-                    this._marker.openPopup();
+		    this._map.setView([lat, lon], zoomLevel, false);
+		    if (this.options.markNames) {
+			this._marker = L.marker([lat, lon]);
+			this._marker.addTo(this._map).bindPopup(this._getName(geoname));
+			this._marker.openPopup();
+		    }
                 }, this);
             }, this);
         }

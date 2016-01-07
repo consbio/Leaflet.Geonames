@@ -60,7 +60,8 @@ var control = L.control.geonames({
     workingClass: 'fa-spin',  // class for search underway
     featureClasses: ['A', 'H', 'L', 'P', 'R', 'T', 'U', 'V'],  // feature classes to search against.  See: http://www.geonames.org/export/codes.html
     baseQuery: 'isNameRequired=true',  // The core query sent to GeoNames, later combined with other parameters above
-    position: 'topleft'
+    position: 'topleft',
+    markNames: true // show a marker at the location of each geoname found, with an associated popup which shows the name
 });
 map.addControl(control);
 ```
