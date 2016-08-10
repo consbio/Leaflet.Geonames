@@ -32,6 +32,7 @@ L.Control.Geonames = L.Control.extend({
         L.DomEvent
             .on(this._container, 'dblclick', L.DomEvent.stop)
             .on(this._container, 'click', L.DomEvent.stop)
+            .on(this._container, 'mousedown', L.DomEvent.stopPropagation)
             .on(link, 'click', function(){
                 this._active = !this._active;
                 if (this._active){
