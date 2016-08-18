@@ -1,3 +1,7 @@
+//See this url for more info about valid adminCodes: http://www.geonames.org/export/geonames-search.html
+var ADMIN_CODES = ['country', 'adminCode1', 'adminCode2', 'adminCode3', 'continentCode'];
+var BBOX = ['east', 'west', 'north', 'south'];
+
 L.Control.Geonames = L.Control.extend({
     _active: false,
     _resultsList: null,
@@ -12,7 +16,10 @@ L.Control.Geonames = L.Control.extend({
         featureClasses: ['A', 'H', 'L', 'P', 'R', 'T', 'U', 'V'], //feature classes to search against.  See: http://www.geonames.org/export/codes.html
         baseQuery: 'isNameRequired=true', //The core query sent to GeoNames, later combined with other parameters above
         position: 'topleft',
-	markNames: true //show a marker at the location of each geoname found, with an associated popup which shows the name
+	    markNames: true, //show a marker at the location of each geoname found, with an associated popup which shows the name
+        adminCodes: {},  //Filter results by the specified admin codes mentioned in `ADMIN_CODES`. Each code can be a string or a function returning a string. `country` can be a comma-separated list of countries.
+        bbox: {}, //An object in form of {east:..., west:..., north:..., south:...}, specifying the bounding box to limit the results to
+        lang: 'en' //Locale of results
     },
     onAdd: function() {
         this._container = L.DomUtil.create('div', 'leaflet-geonames-search leaflet-bar');
@@ -72,7 +79,9 @@ L.Control.Geonames = L.Control.extend({
         var url = '//api.geonames.org/searchJSON?q=' + encodeURIComponent(this._input.value)
             + '&maxRows=' + this.options.maxresults
             + '&username=' + this.options.username
-            + '&style=LONG';
+            + '&style=LONG'
+            + '&lang=' + this.options.lang
+            + this._getSearchParams();
         if (this.options.featureClasses && this.options.featureClasses.length){
             url += '&' + this.options.featureClasses.map(function(fc){return 'featureClass=' + fc}).join('&');
         }
@@ -90,6 +99,47 @@ L.Control.Geonames = L.Control.extend({
             },
             callbackName
         );
+    },
+    _getSearchParams: function() {
+        var params = '';
+
+        for (var paramName in this.options.adminCodes) {
+            if (ADMIN_CODES.indexOf(paramName) == -1) {
+                continue;
+            }
+
+            var paramValue = this.options.adminCodes[paramName];
+
+            if (typeof paramValue == 'function') {
+                paramValue = paramValue();
+                if (paramValue) {
+                    params += '&' + paramName + '=' + paramValue;
+                }
+            } else if (typeof paramValue == 'string' && paramValue.length > 0) {
+                params += '&' + paramName + '=' + paramValue;
+            }
+        }
+
+        params += this._getBbox();
+
+        return params;
+    },
+    _getBbox: function() {
+        var bboxStr = '', bboxValue = this.options.bbox;
+
+        if (typeof bboxValue == 'function') {
+            bboxValue = bboxValue();
+        }
+
+        for (var i in BBOX) {
+            var dir = BBOX[i];
+            if (!bboxValue[dir]) {
+                bboxStr = '';
+                break;
+            }
+            bboxStr += '&' + dir + '=' + bboxValue[dir];
+        }
+        return bboxStr;
     },
     _jsonp: function(url, callback, callbackName){
         callbackName = callbackName || 'jsonpCallback';
