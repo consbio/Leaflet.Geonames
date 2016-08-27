@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Leaflet Geonames Search Control</title>
+    <script src="https://cdn.rawgit.com/showdownjs/showdown/1.4.2/dist/showdown.min.js"></script>
+
+    <style>
+        #content {
+            padding: 50px;
+        }
+    </style>
+</head>
+<body>
+<div id="content"></div>
+<script>
+    var converter = new showdown.Converter();
+    var readme = new XMLHttpRequest();
+
+    readme.open("GET", 'README.md', true);
+    readme.send();
+    readme.onreadystatechange = function () {
+        if (readme.readyState == 4 && readme.status == 200) {
+            document.getElementById('content').innerHTML = converter.makeHtml(readme.responseText);
+        }
+    };
+</script>
+</body>
+</html>

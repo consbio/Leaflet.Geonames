@@ -66,7 +66,11 @@ var control = L.control.geonames({
 map.addControl(control);
 ```
 
-
+## Demos:
+- [Basic](examples/basic.html)
+- [Admin Codes](examples/adminCodes.html)
+- [Bounding Box](examples/bbox.html)
+- [Locale](examples/locale.html)
 
 
 ## Credits:
