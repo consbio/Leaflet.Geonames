@@ -1,10 +1,9 @@
 {
   "name": "Leaflet.Geonames",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "homepage": "https://github.com/consbio/Leaflet.Geonames",
   "authors": [
-    "Brendan Ward <bcward@consbio.org>",
-    "Mike Moran <mike@houseofmoran.com>"
+    "Brendan Ward <bcward@consbio.org>"
   ],
   "description": "GeoNames geocoding search control for Leaflet",
   "main": [

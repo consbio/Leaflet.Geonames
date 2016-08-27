@@ -4,11 +4,9 @@ A [GeoNames](http://www.geonames.org/) powered geocoding search control for Leaf
 
 It allows you to enter a placename, display a list of search results using GeoNames, and select a placename to zoom to.
   
-Location markers remain on the map until the control is closed (click on icon to open / close).  
+Location markers remain on the map until the control is closed (click on icon to open / close). 
 
-See the [example](http://consbio.github.io/Leaflet.Geonames).
-
-*Tested with Leaflet 0.7.x*
+*Tested with Leaflet 1.0.0-rc3*
 
 
 ## Install
@@ -35,7 +33,7 @@ Include the CSS:
 <link rel="stylesheet" href="L.Control.Geonames.css" />
 ```
 
-This control uses [Font Awesome](http://fortawesome.github.io/Font-Awesome/) for the icon by default.  To use, include:
+This control uses [Font Awesome](http://fontawesome.io/) for the icon by default.  To use, include:
 
 ```
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
@@ -61,7 +59,13 @@ var control = L.control.geonames({
     featureClasses: ['A', 'H', 'L', 'P', 'R', 'T', 'U', 'V'],  // feature classes to search against.  See: http://www.geonames.org/export/codes.html
     baseQuery: 'isNameRequired=true',  // The core query sent to GeoNames, later combined with other parameters above
     position: 'topleft',
-    markNames: true // show a marker at the location of each geoname found, with an associated popup which shows the name
+    markNames: true // show a marker at the location of each geoname found, with an associated popup which shows the name,
+    adminCodes: { // filter results by a country and state.  Values can be strings or return by a function.
+        country: 'us',
+        adminCode1: function() {return 'wa'}
+    },
+    lang: 'en', // language for results
+    bbox: {east:-121, west: -123, north: 46, south: 45} // bounding box filter for results (e.g., map extent).  Values can be an object with east, west, north, south, or a function that returns that object.
 });
 map.addControl(control);
 ```
@@ -74,7 +78,11 @@ map.addControl(control);
 
 
 ## Credits:
-Developed with support from the [South Atlantic Landscape Conservation Cooperative](http://www.southatlanticlcc.org/)
+Developed with support from the [South Atlantic Landscape Conservation Cooperative](http://www.southatlanticlcc.org/), and maintained with support from [Peninsular Florida LCC](http://peninsularfloridalcc.org/).
 
 Some ideas derived from [L.GeoSearch](https://github.com/smeijer/L.GeoSearch).
 
+## Contributors: 
+* [Brendan Ward](https://github.com/brendan-ward) 
+* [Kaveh Karimi-Asli](https://github.com/ka7eh) 
+* [Mike Moran](https://github.com/mikemoraned)
