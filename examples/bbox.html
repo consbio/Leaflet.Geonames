@@ -6,11 +6,27 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0-rc.3/leaflet.css"/>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>
     <link rel="stylesheet" href="../L.Control.Geonames.css"/>
+    <style>
+        #Nav li {
+            display:inline;
+            margin-left: 10px;
+
+        }
+    </style>
 </head>
 <body>
-<script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0-rc.3/leaflet.js"></script>
-<script src="../L.Control.Geonames.js"></script>
-<div id="map" style="position: absolute; top: 0; left:0; bottom:0; right: 0;"></div>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0-rc.3/leaflet.js"></script>
+    <script src="../L.Control.Geonames.js"></script>
+    <div>
+        <h2 style="float:left;margin:0;">Bounding Box Example: <small>only placenames in current map extent are returned</small></h2>
+        <ul id="Nav" style="float:right;list-style-type:none; margin:0;padding:0;">
+            <li><b>Other examples:</b></li>
+            <li><a href="basic.html">Basic</a></li>
+            <li><a href="adminCodes.html">Admin Codes</a></li>
+            <li><a href="locale.html">Locale</a></li>
+        </ul>
+    </div>
+    <div id="map" style="position: absolute; top: 3em; left:0; bottom:0; right: 0;border-top:2px solid #555;"></div>
 
 <script>
     var map = L.map('map').setView([44.07, -118.78], 6);

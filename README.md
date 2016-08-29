@@ -71,10 +71,10 @@ map.addControl(control);
 ```
 
 ## Demos:
-- [Basic](examples/basic.html)
-- [Admin Codes](examples/adminCodes.html)
-- [Bounding Box](examples/bbox.html)
-- [Locale](examples/locale.html)
+- [Basic](http://consbio.github.io/Leaflet.Geonames/examples/basic.html)
+- [Admin Codes](http://consbio.github.io/Leaflet.Geonames/examples/adminCodes.html)
+- [Bounding Box](http://consbio.github.io/Leaflet.Geonames/examples/bbox.html)
+- [Locale](http://consbio.github.io/Leaflet.Geonames/examples/locale.html)
 
 
 ## Credits:
