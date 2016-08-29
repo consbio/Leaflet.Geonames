@@ -2,13 +2,12 @@
     background-color: #FFF;
 }
 .leaflet-geonames-search a{
-    font-size: 18px;
     border-radius: 4px;
     display: inline-block;
     float:right;
 }
 .leaflet-geonames-search a {
-    background: none !important;
+    background-color: transparent !important;
     border: none !important;
 }
 .leaflet-geonames-search form {
@@ -39,10 +38,6 @@
 .leaflet-geonames-search input:focus {
     outline: 0;
 }
-.leaflet-geonames-search.active a {
-    border-radius: 0 4px 4px 0;
-    border-bottom-color: #FFF;
-}
 .leaflet-geonames-search.active input {
     display: inline-block;
 }
@@ -53,4 +48,31 @@
 .leaflet-geonames-search ul.noResults {
     color: #999;
     font-style: italic;
+}
+.leaflet-geonames-icon {
+    background: url(ic_directions_black_24px.svg) no-repeat center center;
+    background-size: 24px 24px;
+    background-color: transparent;
+}
+.leaflet-geonames-icon-working {
+    background-image: url(ic_cached_black_24px.svg);
+    animation: spin 2s infinite linear;
+}
+@-webkit-keyframes spin{
+    0%{
+        -webkit-transform:rotate(0deg);
+        transform:rotate(0deg)
+    }
+    100%{
+        -webkit-transform:rotate(359deg);
+        transform:rotate(359deg)}
+}
+@keyframes spin{
+    0%{
+        -webkit-transform:rotate(0deg);
+        transform:rotate(0deg)
+    }
+    100%{
+        -webkit-transform:rotate(359deg);
+        transform:rotate(359deg)}
 }

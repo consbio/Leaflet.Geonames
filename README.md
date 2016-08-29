@@ -33,11 +33,7 @@ Include the CSS:
 <link rel="stylesheet" href="L.Control.Geonames.css" />
 ```
 
-This control uses [Font Awesome](http://fontawesome.io/) for the icon by default.  To use, include:
-
-```
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
-```
+This control uses [Google Material Icons](https://design.google.com/icons) by default.
 
 
 Include the JavaScript:
@@ -54,8 +50,8 @@ var control = L.control.geonames({
     username: '',  // Geonames account username.  Must be provided
     zoomLevel: null,  // Max zoom level to zoom to for location.  If null, will use the map's max zoom level.
     maxresults: 5,  // Maximum number of results to display per search
-    className: 'fa fa-crosshairs',  // class for icon
-    workingClass: 'fa-spin',  // class for search underway
+    className: 'leaflet-geonames-icon', //class for icon
+    workingClass: 'leaflet-geonames-icon-working', //class for search underway
     featureClasses: ['A', 'H', 'L', 'P', 'R', 'T', 'U', 'V'],  // feature classes to search against.  See: http://www.geonames.org/export/codes.html
     baseQuery: 'isNameRequired=true',  // The core query sent to GeoNames, later combined with other parameters above
     position: 'topleft',
