@@ -50,12 +50,13 @@
     font-style: italic;
 }
 .leaflet-geonames-icon {
-    background: url(ic_directions_black_24px.svg) no-repeat center center;
-    background-size: 24px 24px;
-    background-color: transparent;
+    background: transparent no-repeat center center;
+    /*src: https://design.google.com/icons/#ic_directions*/
+    background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTIxLjcxIDExLjI5bC05LTljLS4zOS0uMzktMS4wMi0uMzktMS40MSAwbC05IDljLS4zOS4zOS0uMzkgMS4wMiAwIDEuNDFsOSA5Yy4zOS4zOSAxLjAyLjM5IDEuNDEgMGw5LTljLjM5LS4zOC4zOS0xLjAxIDAtMS40MXpNMTQgMTQuNVYxMmgtNHYzSDh2LTRjMC0uNTUuNDUtMSAxLTFoNVY3LjVsMy41IDMuNS0zLjUgMy41eiIvPiAgICA8cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+PC9zdmc+);
 }
 .leaflet-geonames-icon-working {
-    background-image: url(ic_autorenew_black_24px.svg);
+    /*src: https://design.google.com/icons/#ic_autorenew*/
+    background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTEyIDZ2M2w0LTQtNC00djNjLTQuNDIgMC04IDMuNTgtOCA4IDAgMS41Ny40NiAzLjAzIDEuMjQgNC4yNkw2LjcgMTQuOGMtLjQ1LS44My0uNy0xLjc5LS43LTIuOCAwLTMuMzEgMi42OS02IDYtNnptNi43NiAxLjc0TDE3LjMgOS4yYy40NC44NC43IDEuNzkuNyAyLjggMCAzLjMxLTIuNjkgNi02IDZ2LTNsLTQgNCA0IDR2LTNjNC40MiAwIDgtMy41OCA4LTggMC0xLjU3LS40Ni0zLjAzLTEuMjQtNC4yNnoiLz4gICAgPHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==);
     animation: spin 2s infinite linear;
 }
 @-webkit-keyframes spin{
