@@ -3,6 +3,8 @@ var ADMIN_CODES = ['country', 'adminCode1', 'adminCode2', 'adminCode3', 'contine
 var BBOX = ['east', 'west', 'north', 'south'];
 
 L.Control.Geonames = L.Control.extend({
+    includes: L.Mixin.Events,
+
     _active: false,
     _resultsList: null,
     _marker: null,
@@ -76,12 +78,44 @@ L.Control.Geonames = L.Control.extend({
         this._hasResults = false;
         this._resultsList.innerHTML = '';
 
-        var url = '//api.geonames.org/searchJSON?q=' + encodeURIComponent(this._input.value)
-            + '&maxRows=' + this.options.maxresults
-            + '&username=' + this.options.username
-            + '&style=LONG'
-            + '&lang=' + this.options.lang
-            + this._getSearchParams();
+        var i, param;
+
+        var bbox = (typeof this.options.bbox == 'function')? this.options.bbox(): this.options.bbox;
+        for (i in BBOX) {
+            if (!bbox[BBOX[i]]) {
+                bbox = null;
+                break;
+            }
+        }
+
+        var searchParams = {
+            q: this._input.value,
+            lang: this.options.lang
+        };
+        for (param in this.options.adminCodes) {
+            if (ADMIN_CODES.indexOf(param) == -1) continue;
+
+            var paramValue = this.options.adminCodes[param];
+            searchParams[param] = (typeof paramValue == 'function') ? paramValue() : paramValue;
+        }
+        if (bbox) {
+            for (i in BBOX) {
+                param = BBOX[i];
+                searchParams[param] = bbox[param];
+            }
+        }
+
+        this.fire('search', {params: searchParams});
+
+        // parameters excluded from event above
+        var coreParams = {
+            username: this.options.username,
+            maxRows: this.options.maxresults,
+            style: "LONG"
+        };
+
+
+        var url = '//api.geonames.org/searchJSON?' + this._objToQuery(coreParams) + '&' + this._objToQuery(searchParams);
         if (this.options.featureClasses && this.options.featureClasses.length){
             url += '&' + this.options.featureClasses.map(function(fc){return 'featureClass=' + fc}).join('&');
         }
@@ -99,47 +133,15 @@ L.Control.Geonames = L.Control.extend({
             },
             callbackName
         );
+
     },
-    _getSearchParams: function() {
-        var params = '';
-
-        for (var paramName in this.options.adminCodes) {
-            if (ADMIN_CODES.indexOf(paramName) == -1) {
-                continue;
-            }
-
-            var paramValue = this.options.adminCodes[paramName];
-
-            if (typeof paramValue == 'function') {
-                paramValue = paramValue();
-                if (paramValue) {
-                    params += '&' + paramName + '=' + paramValue;
-                }
-            } else if (typeof paramValue == 'string' && paramValue.length > 0) {
-                params += '&' + paramName + '=' + paramValue;
-            }
+    _objToQuery: function(obj) {
+        var queryParams = [];
+        for(var param in obj)
+        if (obj.hasOwnProperty(param)) {
+            queryParams.push(encodeURIComponent(param) + "=" + encodeURIComponent(obj[param]));
         }
-
-        params += this._getBbox();
-
-        return params;
-    },
-    _getBbox: function() {
-        var bboxStr = '', bboxValue = this.options.bbox;
-
-        if (typeof bboxValue == 'function') {
-            bboxValue = bboxValue();
-        }
-
-        for (var i in BBOX) {
-            var dir = BBOX[i];
-            if (!bboxValue[dir]) {
-                bboxStr = '';
-                break;
-            }
-            bboxStr += '&' + dir + '=' + bboxValue[dir];
-        }
-        return bboxStr;
+        return queryParams.join("&");
     },
     _jsonp: function(url, callback, callbackName){
         callbackName = callbackName || 'jsonpCallback';

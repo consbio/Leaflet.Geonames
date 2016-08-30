@@ -66,6 +66,18 @@ var control = L.control.geonames({
 map.addControl(control);
 ```
 
+
+## Events
+This control fires a `search` event with the value of search parameters:
+
+```
+> control.on('search', function(e){console.log(e.params)});
+
+=> {q: "oregon", lang: "en"}
+```
+
+
+
 ## Demos:
 - [Basic](http://consbio.github.io/Leaflet.Geonames/examples/basic.html)
 - [Admin Codes](http://consbio.github.io/Leaflet.Geonames/examples/adminCodes.html)
