@@ -55,7 +55,7 @@
     background-color: transparent;
 }
 .leaflet-geonames-icon-working {
-    background-image: url(ic_cached_black_24px.svg);
+    background-image: url(ic_autorenew_black_24px.svg);
     animation: spin 2s infinite linear;
 }
 @-webkit-keyframes spin{
