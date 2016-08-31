@@ -8,6 +8,7 @@ L.Control.Geonames = L.Control.extend({
     _active: false,
     _resultsList: null,
     _marker: null,
+    _popup: null,
     _hasResults: false,
     options: {
         username: '', //Geonames account username.  Must be provided
@@ -18,7 +19,8 @@ L.Control.Geonames = L.Control.extend({
         featureClasses: ['A', 'H', 'L', 'P', 'R', 'T', 'U', 'V'], //feature classes to search against.  See: http://www.geonames.org/export/codes.html
         baseQuery: 'isNameRequired=true', //The core query sent to GeoNames, later combined with other parameters above
         position: 'topleft',
-	    markNames: true, //show a marker at the location of each geoname found, with an associated popup which shows the name
+        showMarker: true, //Show a marker at the location the selected location
+        showPopup: true, //Show a tooltip at the selected location
         adminCodes: {},  //Filter results by the specified admin codes mentioned in `ADMIN_CODES`. Each code can be a string or a function returning a string. `country` can be a comma-separated list of countries.
         bbox: {}, //An object in form of {east:..., west:..., north:..., south:...}, specifying the bounding box to limit the results to
         lang: 'en' //Locale of results
@@ -58,6 +60,40 @@ L.Control.Geonames = L.Control.extend({
 
         return this._container;
     },
+    addPoint: function(geoname) {
+        var lat = parseFloat(geoname.lat);
+        var lon = parseFloat(geoname.lng);
+
+        if (this.options.showMarker || this.options.showPopup) {
+            var zoomLevel = this.options.zoomLevel || this._map.getMaxZoom();
+            this._map.setView([lat, lon], zoomLevel, false);
+        }
+
+        if (this._marker != null) {
+            this._map.removeLayer(this._marker);
+            this._marker = null;
+        }
+
+        if (this._tooltip != null) {
+            this._map.closePopup(this._tooltip);
+            this._tooltip = null;
+        }
+
+        if (this.options.showMarker) {
+            this._marker = L.marker([lat, lon]).addTo(this._map);
+
+            if (this.options.showPopup) {
+                this._marker.bindPopup(this._getName(geoname));
+                this._marker.openPopup();
+            }
+        }
+        else if (this.options.showPopup) {
+            this._popup = L.popup()
+                .setLatLng([lat,lon])
+                .setContent(this._getName(geoname))
+                .openOn(this._map);
+        }
+    },
     _close: function(){
         L.DomUtil.removeClass(this._container, 'active');
         L.DomUtil.removeClass(this._resultsList, 'hasResults');
@@ -66,6 +102,10 @@ L.Control.Geonames = L.Control.extend({
         if (this._marker != null){
             this._map.removeLayer(this._marker);
             this._marker = null;
+        }
+        if (this._popup != null) {
+            this._map.closePopup(this._popup);
+            this._popup = null;
         }
     },
     _search: function(event){
@@ -161,23 +201,12 @@ L.Control.Geonames = L.Control.extend({
             L.DomUtil.addClass(this._resultsList, 'hasResults');
             this._hasResults = true;
             var li;
-	    var zoomLevel = this.options.zoomLevel || this._map.getMaxZoom();
             response.geonames.forEach(function(geoname){
                 li = L.DomUtil.create('li', '', this._resultsList);
                 li.innerHTML = this._getName(geoname);
                 L.DomEvent.addListener(li, 'click', function(){
-                    var lat = parseFloat(geoname.lat);
-                    var lon = parseFloat(geoname.lng);
-                    if (this._marker != null){
-                        this._map.removeLayer(this._marker);
-                        this._marker = null;
-                    }
-		    this._map.setView([lat, lon], zoomLevel, false);
-		    if (this.options.markNames) {
-			this._marker = L.marker([lat, lon]);
-			this._marker.addTo(this._map).bindPopup(this._getName(geoname));
-			this._marker.openPopup();
-		    }
+                    this.fire('select', {geoname: geoname});    
+                    this.addPoint(geoname);
                 }, this);
             }, this);
         }
