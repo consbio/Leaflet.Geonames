@@ -69,14 +69,25 @@ map.addControl(control);
 
 
 ## Events
+
+
+### Search Event
 This control fires a `search` event with the value of search parameters:
 
-```
-> control.on('search', function(e){console.log(e.params)});
+`control.on('search', function(e){console.log(e.params)});`
 
-=> {q: "oregon", lang: "en"}
-```
+results in
+`{q: "oregon", lang: "en"}`
 
+
+### Select Event
+This control fires a `select` event when an option was selected from list, 
+with the full response JSON from geonames:
+
+`control.on('select', function(e){console.log(e.geoname)});`
+
+results in 
+`{adminCode1: "OR", lng: "-120.50139", geonameId: 5744337, ...}`
 
 
 ## Demos:
@@ -84,6 +95,7 @@ This control fires a `search` event with the value of search parameters:
 - [Admin Codes](http://consbio.github.io/Leaflet.Geonames/examples/adminCodes.html)
 - [Bounding Box](http://consbio.github.io/Leaflet.Geonames/examples/bbox.html)
 - [Locale](http://consbio.github.io/Leaflet.Geonames/examples/locale.html)
+- [Events](http://consbio.github.io/Leaflet.Geonames/examples/events.html)
 
 
 ## Credits:
@@ -93,5 +105,6 @@ Some ideas derived from [L.GeoSearch](https://github.com/smeijer/L.GeoSearch).
 
 ## Contributors: 
 * [Brendan Ward](https://github.com/brendan-ward) 
-* [Kaveh Karimi-Asli](https://github.com/ka7eh) 
+* [Kaveh Karimi-Asli](https://github.com/ka7eh)
+* [Nik Molnar](https://github.com/nikmolnar)
 * [Mike Moran](https://github.com/mikemoraned)

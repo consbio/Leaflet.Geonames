@@ -17,7 +17,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0-rc.3/leaflet.js"></script>
     <script src="../L.Control.Geonames.js"></script>
     <div>
-        <h2 style="float:left;margin:0;">Event Handling Example</h2>
+        <h2 style="float:left;margin:0;">Event Handling Example: <small>See event data in your javascript console</small></h2>
         <ul id="Nav" style="float:right;list-style-type:none; margin:0;padding:0;">
             <li><b>Other examples:</b></li>
             <li><a href="basic.html">Basic</a></li>
@@ -37,10 +37,14 @@
             minZoom: 2
         }).addTo(map);
 
-        var control = L.control.geonames({username: 'cbi.test', showPoint: false, showPopup: false});
+        var control = L.control.geonames({username: 'cbi.test'});
+
+        control.on('search', function(e){
+            console.log('GeoNames search: ', e.params);
+        });
 
         control.on('select', function(e){
-
+            console.log('GeoName selected: ', e.geoname);
         });
 
         map.addControl(control);
