@@ -6,7 +6,7 @@ It allows you to enter a placename, display a list of search results using GeoNa
   
 Location markers remain on the map until the control is closed (click on icon to open / close). 
 
-*Tested with Leaflet 1.0.0-rc3*
+*Tested with Leaflet 1.0.0*
 
 
 ## Install
