@@ -2,11 +2,13 @@
 
 A [GeoNames](http://www.geonames.org/) powered geocoding search control for Leaflet.  
 
-It allows you to enter a placename, display a list of search results using GeoNames, and select a placename to zoom to.
+It allows you to enter a placename, display a list of search results using GeoNames,
+and select a placename to zoom to.
   
-Location markers remain on the map until the control is closed (click on icon to open / close). 
+Location markers remain on the map until the search field is cleared.
+Click on icon to open / close unless `alwaysOpen` is set to true (in which case clicking on the icon does nothing).
 
-*Tested with Leaflet 1.0.0*
+*Tested with Leaflet 1.0.3
 
 
 ## Install
@@ -47,6 +49,7 @@ Example usage:
 
 ```
 var control = L.control.geonames({
+    //position: 'topcenter',  // in addition to standard 4 corner Leaflet control layout, this will position and size from top center
     username: '',  // Geonames account username.  Must be provided
     zoomLevel: null,  // Max zoom level to zoom to for location.  If null, will use the map's max zoom level.
     maxresults: 5,  // Maximum number of results to display per search
@@ -62,10 +65,15 @@ var control = L.control.geonames({
         adminCode1: function() {return 'wa'}
     },
     lang: 'en', // language for results
-    bbox: {east:-121, west: -123, north: 46, south: 45} // bounding box filter for results (e.g., map extent).  Values can be an object with east, west, north, south, or a function that returns that object.
+    bbox: {east:-121, west: -123, north: 46, south: 45}, // bounding box filter for results (e.g., map extent).  Values can be an object with east, west, north, south, or a function that returns that object.
+    alwaysOpen: false  //if true, search field is always visible
 });
 map.addControl(control);
 ```
+
+For mobile responsive view, use `position: 'topcenter'` and `alwaysOpen: true` options.
+See [mobile example](http://consbio.github.io/Leaflet.Geonames/examples/mobileview.html)
+using a mobile device or emulator.
 
 
 ## Events
@@ -96,6 +104,11 @@ results in
 - [Bounding Box](http://consbio.github.io/Leaflet.Geonames/examples/bbox.html)
 - [Locale](http://consbio.github.io/Leaflet.Geonames/examples/locale.html)
 - [Events](http://consbio.github.io/Leaflet.Geonames/examples/events.html)
+- [Mobile View](http://consbio.github.io/Leaflet.Geonames/examples/mobileview.html)
+
+
+## Changes
+See [changelog](CHANGES.md)
 
 
 ## Credits:
@@ -108,3 +121,4 @@ Some ideas derived from [L.GeoSearch](https://github.com/smeijer/L.GeoSearch).
 * [Kaveh Karimi-Asli](https://github.com/ka7eh)
 * [Nik Molnar](https://github.com/nikmolnar)
 * [Mike Moran](https://github.com/mikemoraned)
+* [Natasha Anisimova](https://github.com/anisimon)

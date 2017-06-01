@@ -11,6 +11,7 @@ L.Control.Geonames = L.Control.extend({
     _popup: null,
     _hasResults: false,
     options: {
+        //position: 'topcenter',  // in addition to standard 4 corner Leaflet control layout, this will position and size from top center
         username: '', //Geonames account username.  Must be provided
         maxresults: 5, //Maximum number of results to display per search
         zoomLevel: null, //Max zoom level to zoom to for location.  If null, will use the map's max zoom level.
@@ -23,44 +24,88 @@ L.Control.Geonames = L.Control.extend({
         showPopup: true, //Show a tooltip at the selected location
         adminCodes: {},  //Filter results by the specified admin codes mentioned in `ADMIN_CODES`. Each code can be a string or a function returning a string. `country` can be a comma-separated list of countries.
         bbox: {}, //An object in form of {east:..., west:..., north:..., south:...}, specifying the bounding box to limit the results to
-        lang: 'en' //Locale of results
+        lang: 'en', //Locale of results
+        alwaysOpen: false  //if true, search field is always visible
     },
-    onAdd: function() {
+    onAdd: function(map) {
+        if (this.options.position == 'topcenter') {
+            // construct a top-center location for this widget
+            // trick from: https://stackoverflow.com/questions/33614912/how-to-locate-leaflet-zoom-control-in-a-desired-position
+            map._controlCorners.topcenter = L.DomUtil.create('div', 'leaflet-top leaflet-center', map._controlContainer);
+        }
+
         this._container = L.DomUtil.create('div', 'leaflet-geonames-search leaflet-bar');
-        this._container.title = 'Search by location name';
+
+        // keep mouse events from causing map to drag or zoom map
+        L.DomEvent.disableClickPropagation(this._container);
+
         var link = this._link = L.DomUtil.create('a', this.options.className, this._container);
         link.href = '#';
+        link.title = 'Search by location name';
 
         var form = L.DomUtil.create('form', '', this._container);
         L.DomEvent.addListener(form, 'submit', this._search, this);
 
         var input = this._input = L.DomUtil.create('input', '', form);
-        input.type = 'text';
+        input.type = 'search';
         input.placeholder = 'Enter a location name';
 
         this._resultsList = L.DomUtil.create('ul', '', this._container);
 
-        L.DomEvent
-            .on(this._container, 'dblclick', L.DomEvent.stop)
-            .on(this._container, 'click', L.DomEvent.stop)
-            .on(this._container, 'mousedown', L.DomEvent.stopPropagation)
-            .on(link, 'click', function(){
-                this._active = !this._active;
-                if (this._active){
-                    L.DomUtil.addClass(this._container, 'active');
-                    input.focus();
-                    if (this._hasResults){
-                        L.DomUtil.addClass(this._resultsList, 'hasResults');
-                    }
+        L.DomEvent.on(input, 'keyup change search', function() {
+            // When input changes, clear out the results
+            L.DomUtil.removeClass(this._resultsList, 'hasResults');
+            L.DomUtil.removeClass(this._resultsList, 'noResults');
+            this._hasResults = false;
+            this._resultsList.innerHTML = '';
+            this.removeMarker();
+            this.removePopup();
+        }, this);
+
+        L.DomEvent.on(input, 'focus', function() {
+            if (!this.active) {
+                this.show();
+            }
+        }, this);
+
+        if (this.options.alwaysOpen) {
+            this._active = true;
+            L.DomUtil.addClass(this._container, 'active');
+            L.DomEvent.on(link, 'click', this.show, this);
+        }
+        else {
+            // Control button toggles visibility of the search field
+            L.DomEvent.on(link, 'click', function(){
+                if (this._active) {
+                    this.hide();
                 }
                 else {
-                    this._close();
+                    this.focus();
                 }
             }, this);
+        }
+
+         map.on('click', function(event) {
+            // ENTER key raises a click event too; ignore it
+            if (event.originalEvent instanceof KeyboardEvent) {
+                return;
+            }
+            if (this.options.alwaysOpen) {
+                this.hideResults();
+            }
+            else {
+                this.hide();
+            }
+        }, this);
 
         return this._container;
     },
     addPoint: function(geoname) {
+        // clear out previous point / popup
+        this.removeMarker();
+        this.removePopup();
+
+        var name = this._getNameParts(geoname).join(', ');
         var lat = parseFloat(geoname.lat);
         var lon = parseFloat(geoname.lng);
 
@@ -69,40 +114,60 @@ L.Control.Geonames = L.Control.extend({
             this._map.setView([lat, lon], zoomLevel, false);
         }
 
-        if (this._marker != null) {
-            this._map.removeLayer(this._marker);
-            this._marker = null;
-        }
-
-        if (this._tooltip != null) {
-            this._map.closePopup(this._tooltip);
-            this._tooltip = null;
-        }
-
         if (this.options.showMarker) {
             this._marker = L.marker([lat, lon]).addTo(this._map);
 
             if (this.options.showPopup) {
-                this._marker.bindPopup(this._getName(geoname));
+                this._marker.bindPopup(name);
                 this._marker.openPopup();
             }
         }
         else if (this.options.showPopup) {
             this._popup = L.popup()
                 .setLatLng([lat,lon])
-                .setContent(this._getName(geoname))
+                .setContent(name)
                 .openOn(this._map);
         }
     },
-    _close: function(){
+    show: function() {
+        this._active = true;
+        L.DomUtil.addClass(this._container, 'active');
+
+        if (this._hasResults) {
+            L.DomUtil.addClass(this._resultsList, 'hasResults');
+        }
+        else {
+            L.DomUtil.addClass(this._resultsList, 'noResults');
+        }
+    },
+    hide: function() {
+        this._active = false;
         L.DomUtil.removeClass(this._container, 'active');
+        this.hideResults();
+    },
+    hideResults: function() {
         L.DomUtil.removeClass(this._resultsList, 'hasResults');
         L.DomUtil.removeClass(this._resultsList, 'noResults');
-        this._active = false;
+    },
+    focus: function() {
+        this.show();
+        this._input.focus();
+    },
+    _close: function(){
+        // Clear search field (if not alwaysOpen, close results list, and
+        // remove marker
+
+        this.hide();
+        this.removeMarker();
+        this.removePopup();
+    },
+    removeMarker: function() {
         if (this._marker != null){
             this._map.removeLayer(this._marker);
             this._marker = null;
         }
+    },
+    removePopup: function() {
         if (this._popup != null) {
             this._map.closePopup(this._popup);
             this._popup = null;
@@ -154,7 +219,6 @@ L.Control.Geonames = L.Control.extend({
             style: "LONG"
         };
 
-
         var url = '//api.geonames.org/searchJSON?' + this._objToQuery(coreParams) + '&' + this._objToQuery(searchParams);
         if (this.options.featureClasses && this.options.featureClasses.length){
             url += '&' + this.options.featureClasses.map(function(fc){return 'featureClass=' + fc}).join('&');
@@ -203,8 +267,21 @@ L.Control.Geonames = L.Control.extend({
             var li;
             response.geonames.forEach(function(geoname){
                 li = L.DomUtil.create('li', '', this._resultsList);
-                li.innerHTML = this._getName(geoname);
+                var nameParts = this._getNameParts(geoname);
+                var primaryName = nameParts.slice(0,2).join(', ');
+                var countryName = (nameParts.length > 2)? '<br/><em>' + nameParts[2] + '</em>': '';
+                li.innerHTML =  primaryName + countryName;
                 L.DomEvent.addListener(li, 'click', function(){
+                    //The user picks a location and it changes the search text to be that location
+                    this._input.value = primaryName;
+
+                    if (this.options.alwaysOpen) {
+                        this.hideResults();
+                    }
+                    else {
+                        this.hide();
+                    }
+
                     this.fire('select', {geoname: geoname});    
                     this.addPoint(geoname);
                 }, this);
@@ -216,16 +293,17 @@ L.Control.Geonames = L.Control.extend({
             li.innerText = 'No results found';
         }
     },
-    _getName: function(geoname){
-        var name = geoname.name;
+    _getNameParts: function(geoname){
         var extraName;
+        var parts = [geoname.name];
+
         ['adminName1', 'countryName'].forEach(function(d){
             extraName = geoname[d];
             if (extraName && extraName != '' && extraName != geoname.name){
-                name += ', ' + extraName;
+                parts.push(extraName);
             }
         }, this);
-        return name;
+        return parts;
     }
 });
 
