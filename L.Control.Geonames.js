@@ -12,6 +12,7 @@ L.Control.Geonames = L.Control.extend({
     _hasResults: false,
     options: {
         //position: 'topcenter',  // in addition to standard 4 corner Leaflet control layout, this will position and size from top center
+        geonamesURL: '//api.geonames.org/searchJSON',  // override this if using a proxy to get connection to geonames
         username: '', //Geonames account username.  Must be provided
         maxresults: 5, //Maximum number of results to display per search
         zoomLevel: null, //Max zoom level to zoom to for location.  If null, will use the map's max zoom level.
@@ -219,7 +220,7 @@ L.Control.Geonames = L.Control.extend({
             style: "LONG"
         };
 
-        var url = '//api.geonames.org/searchJSON?' + this._objToQuery(coreParams) + '&' + this._objToQuery(searchParams);
+        var url = this.options.geonamesURL + '?' + this._objToQuery(coreParams) + '&' + this._objToQuery(searchParams);
         if (this.options.featureClasses && this.options.featureClasses.length){
             url += '&' + this.options.featureClasses.map(function(fc){return 'featureClass=' + fc}).join('&');
         }

@@ -50,6 +50,7 @@ Example usage:
 ```
 var control = L.control.geonames({
     //position: 'topcenter',  // in addition to standard 4 corner Leaflet control layout, this will position and size from top center
+    geonamesURL: '//api.geonames.org/searchJSON',  // override this if using a proxy to get connection to geonames
     username: '',  // Geonames account username.  Must be provided
     zoomLevel: null,  // Max zoom level to zoom to for location.  If null, will use the map's max zoom level.
     maxresults: 5,  // Maximum number of results to display per search
