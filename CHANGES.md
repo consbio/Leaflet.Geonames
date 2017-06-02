@@ -1,3 +1,6 @@
+## Version 0.4.1 (6/2/2017)
+* increased max-width of input for larger viewports
+
 ## Version 0.4.0 (5/31/2017)
 * converted input field to a search field type
 * added examples/mobileview.html example for mobile ready version
