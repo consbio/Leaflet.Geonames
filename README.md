@@ -8,7 +8,7 @@ and select a placename to zoom to.
 Location markers remain on the map until the search field is cleared.
 Click on icon to open / close unless `alwaysOpen` is set to true (in which case clicking on the icon does nothing).
 
-*Tested with Leaflet 1.0.3
+*Tested with Leaflet 1.1.0
 
 
 ## Install
@@ -100,12 +100,12 @@ results in
 
 
 ## Demos:
-- [Basic](http://consbio.github.io/Leaflet.Geonames/examples/basic.html)
-- [Admin Codes](http://consbio.github.io/Leaflet.Geonames/examples/adminCodes.html)
-- [Bounding Box](http://consbio.github.io/Leaflet.Geonames/examples/bbox.html)
-- [Locale](http://consbio.github.io/Leaflet.Geonames/examples/locale.html)
-- [Events](http://consbio.github.io/Leaflet.Geonames/examples/events.html)
-- [Mobile View](http://consbio.github.io/Leaflet.Geonames/examples/mobileview.html)
+- [Basic](/examples/basic.html)
+- [Admin Codes](/examples/adminCodes.html)
+- [Bounding Box](/examples/bbox.html)
+- [Locale](/examples/locale.html)
+- [Events](/examples/events.html)
+- [Mobile View](/examples/mobileview.html)
 
 
 ## Changes

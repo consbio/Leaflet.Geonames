@@ -3,7 +3,7 @@ var ADMIN_CODES = ['country', 'adminCode1', 'adminCode2', 'adminCode3', 'contine
 var BBOX = ['east', 'west', 'north', 'south'];
 
 L.Control.Geonames = L.Control.extend({
-    includes: L.Mixin.Events,
+    includes: L.Evented ? L.Evented.prototype : L.Mixin.Events,
 
     _active: false,
     _resultsList: null,
