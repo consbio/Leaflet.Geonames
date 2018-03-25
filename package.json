@@ -1,6 +1,6 @@
 {
 	"name": "leaflet-geonames",
-	"version": "0.4.2",
+	"version": "0.4.3",
 	"description": "Geonames Geocoding Search Control for Leaflet",
   	"homepage": "http://github.com/consbio/Leaflet.Geonames",
   	"author": {
