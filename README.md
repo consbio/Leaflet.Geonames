@@ -13,13 +13,6 @@ Click on icon to open / close unless `alwaysOpen` is set to true (in which case 
 
 ## Install
 
-From Bower:
-
-```
-bower install Leaflet.Geonames
-```
-
-
 From NPM:
 
 ```
