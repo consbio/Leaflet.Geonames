@@ -8,7 +8,7 @@
 		"email": "bcward@consbio.org"
 	},
 	"devDependencies": {
-		"uglify-js": "uglify-js ~> 2.6.0",
+		"uglify-js": "~> 2.6.0",
 		"jake": "~8.0.10",
 		"node-minify": "~1.0.1"
 	},
