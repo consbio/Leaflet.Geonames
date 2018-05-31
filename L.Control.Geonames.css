@@ -22,7 +22,12 @@
 }
 .leaflet-geonames-search form {
     width: 100%;
-    height: 30px;
+    min-height: 30px;
+	overflow:auto;
+}
+.leaflet-geonames-search label {
+	width:80px;
+	display: none;
 }
 .leaflet-geonames-search input {
     padding: 6px 6px 2px 30px;
@@ -33,6 +38,10 @@
     font-size: 12pt;
     box-sizing: border-box;
     -ms-box-sizing: border-box;
+}
+.leaflet-geonames-search input[type="radio"] {
+	width:2em;
+	margin:0.2em 0.2em 0 1.5em;
 }
 .leaflet-geonames-search ul {
     display: none;
@@ -56,8 +65,8 @@
 .leaflet-geonames-search input:focus {
     outline: 0;
 }
-.leaflet-geonames-search.active input {
-    display: block;
+.leaflet-geonames-search.active input, .leaflet-geonames-search.active label {
+    display: inline-block;
 }
 .leaflet-geonames-search ul.hasResults,
 .leaflet-geonames-search ul.noResults{

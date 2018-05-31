@@ -12,10 +12,11 @@ L.Control.Geonames = L.Control.extend({
     _hasResults: false,
     options: {
         //position: 'topcenter',  // in addition to standard 4 corner Leaflet control layout, this will position and size from top center
-        geonamesURL: 'https://secure.geonames.org/searchJSON',  // override this if using a proxy to get connection to geonames
+        geonamesSearch: 'https://secure.geonames.org/searchJSON',  // override this if using a proxy to get connection to geonames
+		geonamesPostalCodes: 'https://secure.geonames.org/postalCodeSearchJSON',  // override this if using a proxy to get connection to geonames
         username: '', //Geonames account username.  Must be provided
-        maxresults: 5, //Maximum number of results to display per search
-        zoomLevel: null, //Max zoom level to zoom to for location.  If null, will use the map's max zoom level.
+        maxresults: 10, //Maximum number of results to display per search
+        zoomLevel: 15, //Max zoom level to zoom to for location.  If null, will use the map's max zoom level.
         className: 'leaflet-geonames-icon', //class for icon
         workingClass: 'leaflet-geonames-icon-working', //class for search underway
         featureClasses: ['A', 'H', 'L', 'P', 'R', 'T', 'U', 'V'], //feature classes to search against.  See: http://www.geonames.org/export/codes.html
@@ -42,18 +43,44 @@ L.Control.Geonames = L.Control.extend({
 
         var link = this._link = L.DomUtil.create('a', this.options.className, this._container);
         link.href = '#';
-        link.title = 'Search by location name';
+        link.title = 'Search by location name or postcode';
 
         var form = L.DomUtil.create('form', '', this._container);
         L.DomEvent.addListener(form, 'submit', this._search, this);
 
-        var input = this._input = L.DomUtil.create('input', '', form);
-        input.type = 'search';
-        input.placeholder = 'Enter a location name';
+        var lnRadioBtn = this._input = L.DomUtil.create('input', '', form);
+        lnRadioBtn.type = 'radio';
+        lnRadioBtn.title = 'Location name';
+		lnRadioBtn.name = 'locationType';
+		lnRadioBtn.id = 'placename';
+		lnRadioBtn.value = 'geonamesSearch';
+		lnRadioBtn.checked = 'checked';
+		
+		var lnRadioLabel = this._input = L.DomUtil.create('label', '', form);
+		lnRadioLabel.title = 'Place name';
+		lnRadioLabel.innerText = 'Place name';
+		lnRadioLabel.htmlFor  = 'placename';
+				
+		var pcRadioBtn = this._input = L.DomUtil.create('input', '', form);
+        pcRadioBtn.type = 'radio';
+        pcRadioBtn.title = 'Postcode';
+		pcRadioBtn.name = 'locationType';
+		pcRadioBtn.id = 'postcode';
+		pcRadioBtn.value = 'geonamesPostalCodes';
+		
+		var pcRadioLabel = this._input = L.DomUtil.create('label', '', form);
+		pcRadioLabel.title = 'Postcode';
+		pcRadioLabel.innerText = 'Postcode';
+		pcRadioLabel.htmlFor  = 'postcode';
+		
+		var searchInput = this._input = L.DomUtil.create('input', '', form);
+        searchInput.type = 'search';
+        searchInput.placeholder = 'Enter a location name or postcode';
 
+		this._url = this.options.geonamesSearch;
         this._resultsList = L.DomUtil.create('ul', '', this._container);
 
-        L.DomEvent.on(input, 'keyup change search', function() {
+        L.DomEvent.on(searchInput, 'keyup change search', function() {
             // When input changes, clear out the results
             L.DomUtil.removeClass(this._resultsList, 'hasResults');
             L.DomUtil.removeClass(this._resultsList, 'noResults');
@@ -63,11 +90,23 @@ L.Control.Geonames = L.Control.extend({
             this.removePopup();
         }, this);
 
-        L.DomEvent.on(input, 'focus', function() {
+        L.DomEvent.on(searchInput, 'focus', function() {
             if (!this.active) {
                 this.show();
             }
         }, this);
+		
+		L.DomEvent.on(lnRadioBtn, 'click', function(e){
+			searchInput.value = "";
+			this._resultsList.innerHTML = '';
+			this._url = this.options[e.target.value];
+		}, this);
+		
+		L.DomEvent.on(pcRadioBtn, 'click', function(e){
+			searchInput.value = "";
+			this._resultsList.innerHTML = '';
+			this._url = this.options[e.target.value];
+		}, this);
 
         if (this.options.alwaysOpen) {
             this._active = true;
@@ -133,7 +172,6 @@ L.Control.Geonames = L.Control.extend({
     show: function() {
         this._active = true;
         L.DomUtil.addClass(this._container, 'active');
-
         if (this._hasResults) {
             L.DomUtil.addClass(this._resultsList, 'hasResults');
         }
@@ -196,6 +234,7 @@ L.Control.Geonames = L.Control.extend({
 
         var searchParams = {
             q: this._input.value,
+			postalcode: this._input.value,
             lang: this.options.lang
         };
         for (param in this.options.adminCodes) {
@@ -220,7 +259,7 @@ L.Control.Geonames = L.Control.extend({
             style: "LONG"
         };
 
-        var url = this.options.geonamesURL + '?' + this._objToQuery(coreParams) + '&' + this._objToQuery(searchParams);
+        var url = this._url + '?' + this._objToQuery(coreParams) + '&' + this._objToQuery(searchParams);
         if (this.options.featureClasses && this.options.featureClasses.length){
             url += '&' + this.options.featureClasses.map(function(fc){return 'featureClass=' + fc}).join('&');
         }
@@ -260,13 +299,22 @@ L.Control.Geonames = L.Control.extend({
         document.body.appendChild(script);
     },
     _processResponse: function(response){
+		var jsonResponse;
+		if(typeof response.geonames != 'undefined')
+		{
+			jsonResponse = response.geonames;
+		}
+		else if (typeof response.postalCodes != 'undefined')
+		{
+			jsonResponse = response.postalCodes;
+		}
         L.DomUtil.removeClass(this._link, this.options.workingClass);
 
-        if (response.geonames.length > 0){
+        if (jsonResponse.length > 0){
             L.DomUtil.addClass(this._resultsList, 'hasResults');
             this._hasResults = true;
             var li;
-            response.geonames.forEach(function(geoname){
+            jsonResponse.forEach(function(geoname){
                 li = L.DomUtil.create('li', '', this._resultsList);
                 var nameParts = this._getNameParts(geoname);
                 var primaryName = nameParts.slice(0,2).join(', ');
@@ -296,11 +344,19 @@ L.Control.Geonames = L.Control.extend({
     },
     _getNameParts: function(geoname){
         var extraName;
-        var parts = [geoname.name];
+        var parts = [];
+		if(typeof geoname.name != 'undefined')
+		{
+			parts.push(geoname.name);
+		}	
+		else if(typeof geoname.postalCode != 'undefined')
+		{
+			parts.push(geoname.postalCode);
+		}
 
-        ['adminName1', 'countryName'].forEach(function(d){
+        ['adminName1', 'adminName2', 'countryName', 'countryCode'].forEach(function(d){
             extraName = geoname[d];
-            if (extraName && extraName != '' && extraName != geoname.name){
+            if (extraName && extraName != '' && extraName != parts[0]){
                 parts.push(extraName);
             }
         }, this);
