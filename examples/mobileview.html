@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html><head lang="en"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html>
+
+<head lang="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Leaflet Geonames Search Control</title>
@@ -7,47 +10,67 @@
     <link rel="stylesheet" href="../L.Control.Geonames.css">
     <style>
         #Nav li {
-            display:inline;
+            display: inline;
             margin-left: 10px;
 
         }
     </style>
 </head>
+
 <body class="">
     <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/1.1.0/leaflet.js"></script>
     <script src="../L.Control.Geonames.js"></script>
     <div>
         <h2 style="float:left;margin:0;">Mobile Geonames Example</h2>
         <ul id="Nav" style="float:right;list-style-type:none; margin:0;padding:0;">
-            <li><b>Other examples:</b></li>
-            <li><a href="adminCodes.html">Admin Codes</a></li>
-            <li><a href="bbox.html">Bounding Box</a></li>
-            <li><a href="locale.html">Locale</a></li>
-            <li><a href="events.html">Events</a></li>
+            <li>
+                <b>Other examples:</b>
+            </li>
+            <li>
+                <a href="adminCodes.html">Admin Codes</a>
+            </li>
+            <li>
+                <a href="bbox.html">Bounding Box</a>
+            </li>
+            <li>
+                <a href="locale.html">Locale</a>
+            </li>
+            <li>
+                <a href="events.html">Events</a>
+            </li>
+            <li>
+                <a href="postCodes.html">Postal Codes</a>
+            </li>
         </ul>
     </div>
-    <div id="map" style="position: absolute; top: 3em; left: 0px; bottom: 0px; right: 0px; border-top: 2px solid rgb(85, 85, 85);" class="leaflet-container leaflet-touch leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom" tabindex="0"><div class="leaflet-pane leaflet-map-pane" style="transform: translate3d(-257px, 0px, 0px);"><div class="leaflet-pane leaflet-tile-pane"><div class="leaflet-layer " style="z-index: 1; opacity: 1;"><div class="leaflet-tile-container leaflet-zoom-animated" style="z-index: 9; transform: translate3d(1px, -1px, 0px) scale(2);"></div>
-    <script>
-        var map = L.map("map", {
-            attributionControl: false,
-            zoomControl: false // hide zoom buttons in mobile view
-        }).setView([44.07, -118.78], 6);
-        L.tileLayer('//{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png', {
-            attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-            subdomains: 'abcd',
-            maxZoom: 10,
-            minZoom: 2
-        }).addTo(map);
+    <div id="map" style="position: absolute; top: 3em; left: 0px; bottom: 0px; right: 0px; border-top: 2px solid rgb(85, 85, 85);"
+        class="leaflet-container leaflet-touch leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom" tabindex="0">
+        <div class="leaflet-pane leaflet-map-pane" style="transform: translate3d(-257px, 0px, 0px);">
+            <div class="leaflet-pane leaflet-tile-pane">
+                <div class="leaflet-layer " style="z-index: 1; opacity: 1;">
+                    <div class="leaflet-tile-container leaflet-zoom-animated" style="z-index: 9; transform: translate3d(1px, -1px, 0px) scale(2);"></div>
+                    <script>
+                        var map = L.map("map", {
+                            attributionControl: false,
+                            zoomControl: false // hide zoom buttons in mobile view
+                        }).setView([44.07, -118.78], 6);
+                        L.tileLayer('//{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png', {
+                            attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+                            subdomains: 'abcd',
+                            maxZoom: 10,
+                            minZoom: 2
+                        }).addTo(map);
 
-        L.control.geonames({
-            username: 'cbi.test',
-            position:'topcenter',
-            showPopup: false,
-            alwaysOpen: true,
-            maxresults: 3
-        }).addTo(map);
+                        L.control.geonames({
+                            username: 'cbi.test',
+                            position: 'topcenter',
+                            showPopup: false,
+                            alwaysOpen: true,
+                            maxresults: 3
+                        }).addTo(map);
+                    </script>
 
-    </script>
 
+</body>
 
-</body></html>
+</html>

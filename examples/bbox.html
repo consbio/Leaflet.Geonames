@@ -1,58 +1,78 @@
 <!DOCTYPE html>
 <html>
+
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Leaflet Geonames Search Control</title>
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/1.1.0/leaflet.css"/>
-    <link rel="stylesheet" href="../L.Control.Geonames.css"/>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/1.1.0/leaflet.css" />
+    <link rel="stylesheet" href="../L.Control.Geonames.css" />
     <style>
         #Nav li {
-            display:inline;
+            display: inline;
             margin-left: 10px;
 
         }
     </style>
 </head>
+
 <body>
     <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/1.1.0/leaflet.js"></script>
     <script src="../L.Control.Geonames.js"></script>
     <div>
-        <h2 style="float:left;margin:0;">Bounding Box Example: <small>only placenames in current map extent are returned</small></h2>
+        <h2 style="float:left;margin:0;">Bounding Box Example:
+            <small>only placenames in current map extent are returned</small>
+        </h2>
         <ul id="Nav" style="float:right;list-style-type:none; margin:0;padding:0;">
-            <li><b>Other examples:</b></li>
-            <li><a href="basic.html">Basic</a></li>
-            <li><a href="adminCodes.html">Admin Codes</a></li>
-            <li><a href="locale.html">Locale</a></li>
-            <li><a href="events.html">Events</a></li>
-            <li><a href="mobileview.html">Mobile View</a></li>
+            <li>
+                <b>Other examples:</b>
+            </li>
+            <li>
+                <a href="basic.html">Basic</a>
+            </li>
+            <li>
+                <a href="adminCodes.html">Admin Codes</a>
+            </li>
+            <li>
+                <a href="locale.html">Locale</a>
+            </li>
+            <li>
+                <a href="events.html">Events</a>
+            </li>
+            <li>
+                <a href="mobileview.html">Mobile View</a>
+            </li>
+            <li>
+                <a href="postCodes.html">Postal Codes</a>
+            </li>
         </ul>
     </div>
     <div id="map" style="position: absolute; top: 3em; left:0; bottom:0; right: 0;border-top:2px solid #555;"></div>
 
-<script>
-    var map = L.map('map').setView([44.07, -118.78], 6);
-    L.tileLayer('//{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png', {
-        attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-        subdomains: 'abcd',
-        maxZoom: 10,
-        minZoom: 2
-    }).addTo(map);
+    <script>
+        var map = L.map('map').setView([44.07, -118.78], 6);
+        L.tileLayer('//{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png', {
+            attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+            subdomains: 'abcd',
+            maxZoom: 10,
+            minZoom: 2
+        }).addTo(map);
 
-    var control = L.control.geonames({
-        username: 'cbi.test',
-//        bbox: {east:-121, west: -123, north: 46, south: 45}
-        bbox: function() {
-            var bounds = map.getBounds();
-            return {
-                east: bounds.getEast(),
-                west: bounds.getWest(),
-                north: bounds.getNorth(),
-                south: bounds.getSouth()
+        var control = L.control.geonames({
+            username: 'cbi.test',
+            //        bbox: {east:-121, west: -123, north: 46, south: 45}
+            bbox: function () {
+                var bounds = map.getBounds();
+                return {
+                    east: bounds.getEast(),
+                    west: bounds.getWest(),
+                    north: bounds.getNorth(),
+                    south: bounds.getSouth()
+                }
             }
-        }
-    });
-    map.addControl(control);
-</script>
+        });
+        map.addControl(control);
+    </script>
 </body>
+
 </html>
