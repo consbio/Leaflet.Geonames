@@ -20,9 +20,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/1.1.0/leaflet.js"></script>
     <script src="../L.Control.Geonames.js"></script>
     <div>
-        <h2 style="float:left;margin:0;">Locale Example:
-            <small>placenames are returned in 'es' locale</small>
-        </h2>
+        <h2 style="float:left;margin:0;">UK Postcodes Geonames Example</h2>
         <ul id="Nav" style="float:right;list-style-type:none; margin:0;padding:0;">
             <li>
                 <b>Other examples:</b>
@@ -37,13 +35,13 @@
                 <a href="bbox.html">Bounding Box</a>
             </li>
             <li>
+                <a href="locale.html">Locale</a>
+            </li>
+            <li>
                 <a href="events.html">Events</a>
             </li>
             <li>
                 <a href="mobileview.html">Mobile View</a>
-            </li>
-            <li>
-                <a href="postCodes.html">Postal Codes</a>
             </li>
         </ul>
     </div>
@@ -60,7 +58,8 @@
 
         var control = L.control.geonames({
             username: 'cbi.test',
-            lang: 'es'
+            enablePostalCodes: true,
+            postalCodesRegex: POSTALCODE_REGEX_UK
         });
         map.addControl(control);
     </script>
