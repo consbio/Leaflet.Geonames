@@ -90,13 +90,13 @@ results in
 
 ## Demos:
 
-* [Basic](/examples/basic.html)
-* [Admin Codes](/examples/adminCodes.html)
-* [Bounding Box](/examples/bbox.html)
-* [Locale](/examples/locale.html)
-* [Events](/examples/events.html)
-* [Mobile View](/examples/mobileview.html)
-* [Postal Codes](/examples/postCodes.html)
+-   [Basic](examples/basic.html)
+-   [Admin Codes](examples/adminCodes.html)
+-   [Bounding Box](examples/bbox.html)
+-   [Locale](examples/locale.html)
+-   [Events](examples/events.html)
+-   [Mobile View](examples/mobileview.html)
+-   [Postal Codes](examples/postCodes.html)
 
 ## Changes
 
@@ -110,8 +110,8 @@ Some ideas derived from [L.GeoSearch](https://github.com/smeijer/L.GeoSearch).
 
 ## Contributors:
 
-* [Brendan Ward](https://github.com/brendan-ward)
-* [Kaveh Karimi-Asli](https://github.com/ka7eh)
-* [Nik Molnar](https://github.com/nikmolnar)
-* [Mike Moran](https://github.com/mikemoraned)
-* [Natasha Anisimova](https://github.com/anisimon)
+-   [Brendan Ward](https://github.com/brendan-ward)
+-   [Kaveh Karimi-Asli](https://github.com/ka7eh)
+-   [Nik Molnar](https://github.com/nikmolnar)
+-   [Mike Moran](https://github.com/mikemoraned)
+-   [Natasha Anisimova](https://github.com/anisimon)
