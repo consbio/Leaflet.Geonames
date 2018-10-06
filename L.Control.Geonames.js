@@ -61,14 +61,16 @@ L.Control.Geonames = L.Control.extend({
         this._url = this.options.geonamesSearch;
         this._resultsList = L.DomUtil.create('ul', '', this._container);
 
-        L.DomEvent.on(input, 'keyup change search', function () {
-            // When input changes, clear out the results
-            L.DomUtil.removeClass(this._resultsList, 'hasResults');
-            L.DomUtil.removeClass(this._resultsList, 'noResults');
-            this._hasResults = false;
-            this._resultsList.innerHTML = '';
-            this.removeMarker();
-            this.removePopup();
+        L.DomEvent.on(input, 'keyup change search', function (e) {
+            if (e.type === 'search') {
+                // When input changes, clear out the results
+                L.DomUtil.removeClass(this._resultsList, 'hasResults');
+                L.DomUtil.removeClass(this._resultsList, 'noResults');
+                this._hasResults = false;
+                this._resultsList.innerHTML = '';
+                this.removeMarker();
+                this.removePopup();
+            }
         }, this);
 
         L.DomEvent.on(input, 'focus', function () {
@@ -107,6 +109,7 @@ L.Control.Geonames = L.Control.extend({
         return this._container;
     },
     addPoint: function (geoname) {
+        var that = this
         // clear out previous point / popup
         this.removeMarker();
         this.removePopup();
@@ -125,13 +128,19 @@ L.Control.Geonames = L.Control.extend({
 
             if (this.options.showPopup) {
                 this._marker.bindPopup(name);
-                this._marker.openPopup();
+                this._marker.openPopup()
+                this._marker.on('popupclose', function() {
+                    that._onPopupClosed()
+                });
             }
         } else if (this.options.showPopup) {
             this._popup = L.popup()
                 .setLatLng([lat, lon])
                 .setContent(name)
-                .openOn(this._map);
+                .openOn(this._map)
+                .on('remove', function() {
+                    that._onPopupClosed()
+                });
         }
     },
     show: function () {
@@ -175,6 +184,12 @@ L.Control.Geonames = L.Control.extend({
             this._map.closePopup(this._popup);
             this._popup = null;
         }
+    },
+    _onPopupClosed: function () {
+        this._close();
+        this._input.value = ''
+        this._hasResults = false;
+        this._resultsList.innerHTML = '';
     },
     _search: function (event) {
         L.DomEvent.preventDefault(event);
@@ -302,6 +317,7 @@ L.Control.Geonames = L.Control.extend({
                 var primaryName = nameParts.slice(0, 2).join(', ');
                 var countryName = (nameParts.length > 2) ? '<br/><em>' + nameParts[2] + '</em>' : '';
                 li.innerHTML = primaryName + countryName;
+
                 L.DomEvent.addListener(li, 'click', function () {
                     //The user picks a location and it changes the search text to be that location
                     this._input.value = primaryName;
