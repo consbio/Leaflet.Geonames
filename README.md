@@ -115,3 +115,4 @@ Some ideas derived from [L.GeoSearch](https://github.com/smeijer/L.GeoSearch).
 -   [Nik Molnar](https://github.com/nikmolnar)
 -   [Mike Moran](https://github.com/mikemoraned)
 -   [Natasha Anisimova](https://github.com/anisimon)
+-   [Adam Mertel](https://github.com/adammertel)
