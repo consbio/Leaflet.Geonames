@@ -14,7 +14,7 @@ Click on icon to open / close unless `alwaysOpen` is set to true (in which case 
 
 From NPM:
 
-```
+```bash
 npm install leaflet-geonames
 ```
 
@@ -22,7 +22,7 @@ npm install leaflet-geonames
 
 Include the CSS:
 
-```
+```html
 <link rel="stylesheet" href="L.Control.Geonames.css" />
 ```
 
@@ -30,13 +30,13 @@ This control uses [Google Material Icons](https://design.google.com/icons) by de
 
 Include the JavaScript:
 
-```
+```html
 <script src="L.Control.Geonames.min.js"></script>
 ```
 
 Example usage:
 
-```
+```javascript
 var control = L.control.geonames({
     //position: 'topcenter', // In addition to standard 4 corner Leaflet control layout, this will position and size from top center.
     position: 'topleft',
