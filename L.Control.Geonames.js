@@ -96,19 +96,23 @@ L.Control.Geonames = L.Control.extend({
             }, this);
         }
 
-        map.on('click', function (event) {
-            // ENTER key raises a click event too; ignore it
-            if (event.originalEvent instanceof KeyboardEvent) {
-                return;
-            }
-            if (this.options.alwaysOpen) {
-                this.hideResults();
-            } else {
-                this.hide();
-            }
-        }, this);
+        map.on('click', this._mapClicked, this);
 
         return this._container;
+    },
+    onRemove: function () {
+        map.off('click', this._mapClicked, this);
+    },
+    _mapClicked: function (event) {
+        // ENTER key raises a click event too; ignore it
+        if (event.originalEvent instanceof KeyboardEvent) {
+            return;
+        }
+        if (this.options.alwaysOpen) {
+            this.hideResults();
+        } else {
+            this.hide();
+        }
     },
     addPoint: function (geoname) {
         var that = this
