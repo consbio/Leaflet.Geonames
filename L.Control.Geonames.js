@@ -101,7 +101,7 @@ L.Control.Geonames = L.Control.extend({
         return this._container;
     },
     onRemove: function () {
-        map.off('click', this._mapClicked, this);
+        this._map.off('click', this._mapClicked, this);
     },
     _mapClicked: function (event) {
         // ENTER key raises a click event too; ignore it
